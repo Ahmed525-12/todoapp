@@ -1,15 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todoapp/my_theme.dart';
 import 'package:todoapp/screens/home/hompage.dart';
+import 'package:todoapp/screens/tasks/taskeit.dart';
 
-void main() async{
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(
-    
-  );
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,11 +21,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'To Do ',
-      theme:MyThemeData.lightTheme,
+      theme: MyThemeData.lightTheme,
       routes: {
-          HomePage.routename:(context) => HomePage(),
+        HomePage.routename: (context) => HomePage(),
+        TaskEdit.routename:(context) => TaskEdit()
       },
-      initialRoute:HomePage.routename ,
+      initialRoute: HomePage.routename,
     );
   }
 }

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todoapp/firebaseutil.dart';
+import 'package:todoapp/screens/model/task.dart';
+
+import '../utils/utils_ui.dart';
 
 class BottomSheetTab extends StatefulWidget {
   BottomSheetTab({Key? key}) : super(key: key);
@@ -10,7 +14,7 @@ class BottomSheetTab extends StatefulWidget {
 class _BottomSheetTabState extends State<BottomSheetTab> {
   String title = "";
 
-  String discription = "";
+  String desc = "";
 
   DateTime selectdate = DateTime.now();
 
@@ -19,7 +23,10 @@ class _BottomSheetTabState extends State<BottomSheetTab> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -55,7 +62,7 @@ class _BottomSheetTabState extends State<BottomSheetTab> {
                     ),
                     TextFormField(
                       onChanged: (value) {
-                        discription = value;
+                        desc = value;
                       },
                       minLines: 4,
                       maxLines: 4,
@@ -105,19 +112,39 @@ class _BottomSheetTabState extends State<BottomSheetTab> {
   void chooseDate() async {
     var chooseDate = await showDatePicker(
         context: context,
-        initialDate:selectdate,
+        initialDate: selectdate,
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(Duration(days: 365)));
 
-if (chooseDate!=null) {
+    if (chooseDate != null) {
       selectdate = chooseDate;
-      setState(() {
-        
-      });
-}
+      setState(() {});
+    }
   }
 
   void addTask() {
-    if (formControll.currentState?.validate() == true) {}
+
+    if (formControll.currentState?.validate() == true) {
+      Task task = Task(
+          title: title, desc: desc, date: DateUtils.dateOnly(selectdate).microsecondsSinceEpoch );
+
+      showLoading("loading...", context, isCanceld: false);
+      addTasks(task).then((value) {
+        hideDialog(context);
+        showMesage(
+          "Task added Done ",
+          context,
+          "ok",
+          () {
+            Navigator.pop(context);
+                        Navigator.pop(context);
+
+          },
+        );
+      }).catchError((onError) {
+        hideDialog(context);
+      });
+
+    }
   }
 }
