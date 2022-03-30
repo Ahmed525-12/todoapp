@@ -28,7 +28,7 @@ class _TaskWidgetState extends State<TaskWidget> {
       ]),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, TaskEdit.routename,arguments: Editargs(id: widget.task.id) );
+          Navigator.pushNamed(context, TaskEdit.routename,arguments: Editargs(id: widget.task.id,title: widget.task.title,desc: widget.task.desc,date: widget.task.date,isDone: widget.task.isDone) );
         },
         child: Container(
           decoration: BoxDecoration(

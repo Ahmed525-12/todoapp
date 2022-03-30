@@ -23,7 +23,8 @@ class _TaskEditState extends State<TaskEdit> {
 
   @override
   Widget build(BuildContext context) {
-    Task task;
+    Editargs args = ModalRoute.of(context)?.settings.arguments as Editargs;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Task"),
@@ -48,7 +49,7 @@ class _TaskEditState extends State<TaskEdit> {
                           onChanged: (value) {
                             title = value;
                           },
-                          decoration: InputDecoration(labelText: "Title"),
+                          decoration: InputDecoration(labelText: "${args.title}"),
                           validator: (text) {
                             if (text == null || text.isEmpty) {
                               return " pelease Enter title";
@@ -62,7 +63,7 @@ class _TaskEditState extends State<TaskEdit> {
                           },
                           minLines: 4,
                           maxLines: 4,
-                          decoration: InputDecoration(labelText: "Description"),
+                          decoration: InputDecoration(labelText: "${args.desc}"),
                           validator: (text) {
                             if (text == null || text.isEmpty) {
                               return " pelease Enter Description";
@@ -82,7 +83,7 @@ class _TaskEditState extends State<TaskEdit> {
                             chooseDate();
                           },
                           child: Text(
-                            "${selectdate.year} / ${selectdate.month} / ${selectdate.day}",
+                            "${args.date}",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -119,10 +120,14 @@ class _TaskEditState extends State<TaskEdit> {
   }
 
   void addTaskid() {
+        Editargs args = ModalRoute.of(context)?.settings.arguments as Editargs;
+
     if (formControll.currentState?.validate() == true) {
       Task task = Task(
+        id: args.id,
           title: title,
           desc: desc,
+          isDone: args.isDone,
           date: DateUtils.dateOnly(selectdate).microsecondsSinceEpoch);
 
       showLoading("loading...", context, isCanceld: false);
@@ -133,5 +138,14 @@ class _TaskEditState extends State<TaskEdit> {
 
 class Editargs {
   String id;
-  Editargs({required this.id});
+  String title;
+  String desc;
+  int date;
+  bool isDone;
+  Editargs(
+      {required this.id,
+      required this.title,
+      required this.desc,
+      required this.date,
+      required this.isDone});
 }

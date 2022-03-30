@@ -19,7 +19,7 @@ Future<void> addTasks(Task task) {
 }
 
 void addTasksid(Task task) {
-getTaskCollection().doc(task.id).update(task.toJson());
+getTaskCollection().doc().update(task.toJson());
 }
 
 void deletTask(Task task) {
